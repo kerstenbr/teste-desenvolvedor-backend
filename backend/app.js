@@ -1,12 +1,23 @@
-import express from "express"
+import express from "express";
+import mongoose from "mongoose";
 
-const app = express()
-const port = 3000
+const app = express();
+const PORT = 5555;
 
-app.get('/', (req, res) => {
-  res.send('teste')
-})
+app.use(express.json());
 
-app.listen(port, () => {
-  console.log(`Escutando no port: ${port}`)
-})
+if (!process.env.MONGO_URI) {
+  console.log("Sem URI de conexão ao MongoDB no .env");
+}
+
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log("Conectado ao MongoDB com sucesso");
+    app.listen(PORT, () => {
+      console.log(`Servidor rodando na porta ${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.log(`Não foi possivel conectar ao banco de dados: ${error}`);
+  });
