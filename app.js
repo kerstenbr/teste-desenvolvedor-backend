@@ -1,11 +1,14 @@
 import 'dotenv/config'
 import express from "express";
 import mongoose from "mongoose";
+import routes from "./routes/index.js";
 
 const app = express();
 const PORT = 5555;
 
 app.use(express.json());
+
+app.use("/api", routes);
 
 if (!process.env.MONGO_URI) {
   console.log("Sem URI de conexão ao MongoDB no .env");
