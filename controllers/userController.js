@@ -11,12 +11,12 @@ const register = async (request, response) => {
         const { name, email, password } = request.body;
 
         if (!name || !email || !password) {
-            return response.status(400).json({ message: "Nome, email e senha são obrigatórios" });
+            return response.status(400).json({ success: false, message: "Nome, email e senha são obrigatórios" });
         }
 
         const alreadyExists = await User.findOne({ email });
         if (alreadyExists) {
-            return response.status(400).json({ message: "Este email já está em uso" });
+            return response.status(400).json({ success: false,message: "Este email já está em uso" });
         }
 
         const user = await User.create({ name, email, password });
