@@ -9,10 +9,10 @@ const createToken = (_id) => {
 
 const register = async (request, response) => {
     try {
-        const { name, email, password } = request.body;
+        const { email, password } = request.body;
 
-        if (!name || !email || !password) {
-            return response.status(400).json({ success: false, message: "Nome, email e senha são obrigatórios" });
+        if (!email || !password) {
+            return response.status(400).json({ success: false, message: "Email e senha são obrigatórios" });
         }
 
         const alreadyExists = await User.findOne({ email });
@@ -20,7 +20,7 @@ const register = async (request, response) => {
             return response.status(400).json({ success: false, message: "Este email já está em uso" });
         }
 
-        const user = await User.create({ name, email, password });
+        const user = await User.create({ email, password });
 
         const token = createToken(user._id);
 
@@ -48,7 +48,7 @@ const login = async (request, response) => {
         const isMatch = await bcrypt.compare(password, user.password);
 
         if (!isMatch) {
-            return response.status(400).json({ success: false, message: "-----Email ou senha inválidos" });
+            return response.status(400).json({ success: false, message: "Email ou senha inválidos" });
         }
 
         const token = createToken(user._id);
