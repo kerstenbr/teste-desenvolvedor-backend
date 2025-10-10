@@ -9,21 +9,36 @@ const createToken = (_id) => {
 
 const createAddress = async (request, response) => {
     try {
-        const { street } = request.body;
+        const { address } = request.body;
 
-        if (!street) {
+        if (!address) {
             return response.status(400).json({ success: false, message: "O endereço é obrigatório" });
         }
 
-        const address = await Addresses.create({ street, owner: request.user.email });
+        const createdAddress = await Addresses.create({ address, owner: request.user.email });
 
-        return response.status(201).json({ success: true, message: "Endereço criado com sucesso: ", address });
+        return response.status(201).json({ success: true, message: "Endereço criado com sucesso: ", createdAddress });
     } catch (error) {
         console.log(error);
         return response.status(500).json({ success: false, message: error.message });
     }
 };
 
-const getAddresses = async (request, response) => {}
+const getAddresses = async (request, response) => {
+    try {
+        const { address } = request.query;
+
+        if (!address) {
+            return response.status(400).json({ success: false, message: "O endereço é obrigatório" });
+        }
+
+        const foundAddress = await Addresses.find({ owner: request.user.email, address: { $regex: '.*' + address + '.*', $options: 'i' } });
+
+        return response.status(200).json({ success: true, message: foundAddress });
+    } catch (error) {
+        console.log(error);
+        return response.status(500).json({ success: false, message: error.message });
+    }
+}
 
 export { createAddress, getAddresses };

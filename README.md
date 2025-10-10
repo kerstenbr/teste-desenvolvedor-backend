@@ -33,5 +33,9 @@ Método: POST
 Exemplo de body:
 ```json
 {
-    "street": "R. Cuiabá, 32 - Costa e Silva, Joinville - SC"
+    "address": "R. Cuiabá, 32 - Costa e Silva, Joinville - SC"
 }
+
+#### Procurar endereço:
+Método: GET
+```localhost:5555/api/addresses/?address=cuiabá```
