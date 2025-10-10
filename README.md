@@ -35,6 +35,7 @@ Exemplo de body:
 {
     "address": "R. Cuiabá, 32 - Costa e Silva, Joinville - SC"
 }
+```
 
 #### Procurar endereço:
 Método: GET
