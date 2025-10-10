@@ -3,6 +3,7 @@
 ## Rotas:
 
 #### Criar usuário:
+Método: POST
 ```localhost:5555/api/user/user```
 
 Exemplo de body:
@@ -15,6 +16,7 @@ Exemplo de body:
 ```
 
 #### Login:
+Método: POST
 ```localhost:5555/api/user/login```
 
 Exemplo de body:
@@ -24,3 +26,12 @@ Exemplo de body:
     "password": "123"
 }
 ```
+#### Criar endereço:
+Método: POST
+```localhost:5555/api/addresses/```
+
+Exemplo de body:
+```json
+{
+    "street": "R. Cuiabá, 32 - Costa e Silva, Joinville - SC"
+}
