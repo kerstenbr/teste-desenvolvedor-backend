@@ -1,7 +1,7 @@
 import Addresses from "../models/addressesModel.js";
+import Logs from "../models/logsModel.js";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
 
 const createToken = (_id, expiresIn) => {
     return jwt.sign({ _id }, process.env.SECRET_JWT, { expiresIn: "3d" });
@@ -15,7 +15,7 @@ const createAddress = async (request, response) => {
             return response.status(400).json({ success: false, message: "O endereço é obrigatório" });
         }
 
-        const createdAddress = await Addresses.create({ address, owner: request.user.email });
+        const createdAddress = await Addresses.create({ address, owner: request.userId });
 
         return response.status(201).json({ success: true, message: "Endereço criado com sucesso: ", data: { createdAddress } });
     } catch (error) {
@@ -32,7 +32,7 @@ const getAddresses = async (request, response) => {
             return response.status(400).json({ success: false, message: "O endereço é obrigatório" });
         }
 
-        const foundAddresses = await Addresses.find({ owner: request.user.email, address: { $regex: '.*' + address + '.*', $options: 'i' } });
+        const foundAddresses = await Addresses.find({ owner: request.userId, address: { $regex: '.*' + address + '.*', $options: 'i' } });
 
         if (foundAddresses.length === 0) {
             return response.status(404).json({ success: false, message: "Nenhum endereço encontrado" });
@@ -49,11 +49,13 @@ const editAddress = async (request, response) => {
     try {
         const { id } = request.params;
         const { address } = request.body;
-        const owner = request.user.email;
+        const owner = request.userId;
 
         if (!address) {
             return response.status(400).json({ success: false, message: "O endereço é obrigatório" });
         }
+
+        const oldAddress = await Addresses.findOne({ _id: id, owner });
 
         const editedAddress = await Addresses.findOneAndUpdate(
             { _id: id, owner },
@@ -68,6 +70,14 @@ const editAddress = async (request, response) => {
             });
         }
 
+        await Logs.create({
+            user: owner,
+            operation: "PUT",
+            before: { oldAddress },
+            after: { editedAddress },
+            date: new Date()
+        })
+
         return response.status(200).json({ success: true, message: "Endereço editado", data: { editedAddress } });
     } catch (error) {
         console.log(error);
@@ -78,7 +88,7 @@ const editAddress = async (request, response) => {
 const deleteAddress = async (request, response) => {
     try {
         const { id } = request.params;
-        const owner = request.user.email;
+        const owner = request.userId;
 
         if (!id) {
             return response.status(400).json({ success: false, message: "O id é obrigatório" });
@@ -95,6 +105,14 @@ const deleteAddress = async (request, response) => {
             });
         }
 
+        await Logs.create({
+            user: owner,
+            operation: "DELETE",
+            before: { deletedAddress },
+            after: { address: null },
+            date: new Date()
+        })
+
         return response.status(200).json({ success: true, message: "Endereço deletado", data: { deletedAddress } });
     } catch (error) {
         console.log(error);
@@ -106,7 +124,7 @@ const shareAddress = async (request, response) => {
     try {
         const { id } = request.params;
         const { expiresIn } = request.body || "1h";
-        const owner = request.user.email;
+        const owner = request.userId;
 
         if (!id) {
             return response.status(400).json({ success: false, message: "O id é obrigatório" });

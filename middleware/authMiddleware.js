@@ -28,7 +28,7 @@ const isLogged = async (request, response, next) => {
       return response.status(404).json({ success: false, message: "Usuário não encontrado" });
     }
 
-    request.user = user
+    request.userId = user._id;
 
     next();
   } catch (error) {
