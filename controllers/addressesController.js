@@ -55,12 +55,18 @@ const editAddress = async (request, response) => {
             return response.status(400).json({ success: false, message: "O endereço é obrigatório" });
         }
 
-        const canYou = await Addresses.findOne({ _id: id, owner });
-        if (!canYou) {
-            return response.status(401).json({ success: false, message: "Você não tem permissão para editar este endereço" });
-        }
+        const editedAddress = await Addresses.findOneAndUpdate(
+            { _id: id, owner },
+            { address },
+            { new: true }
+        );
 
-        const editedAddress = await Addresses.findByIdAndUpdate(id, { address }, { new: true });
+        if (!editedAddress) {
+            return response.status(404).json({
+                success: false,
+                message: "Endereço não encontrado ou você não tem permissão"
+            });
+        }
 
         return response.status(200).json({ success: true, message: "Endereço editado", data: { editedAddress } });
     } catch (error) {
