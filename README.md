@@ -1,6 +1,23 @@
 # Teste Desenvolvedor Backend
 
+Passo a passo para rodar essa API:
+
+1: Clone esse repositório
+```git clone https://github.com/kerstenbr/teste-desenvolvedor-backend.git``` 
+
+2: Entre na pasta
+```cd teste-desenvolvedor-backend```
+
+3: Inicie o docker
+```docker compose up --build```
+
 ## Rotas:
+
+Se você estiver usando o postman para fazer o teste da API, pode importar as rotas baixando esse json:
+https://drive.google.com/file/d/1VB20Cs9QYbgK4BqaUngKOupZ2aXZk4IK/view?usp=sharing
+
+Lembrando que nas requisições é necessário adicionar o token do usuário e o Auth Type tem que ser Bearer.
+![Print da tela do postman](https://i.imgur.com/0y2cbEm.png)
 
 #### - Criar usuário:
 Método: POST
