@@ -9,7 +9,6 @@ Método: POST
 Exemplo de body:
 ```json
 {
-    "name": "admin",
     "email": "admin@gmail.com",
     "password": "123"
 }
@@ -43,7 +42,7 @@ Método: GET
 
 #### Editar endereço:
 Método: PUT
-```localhost:5555/api/addresses/```
+```localhost:5555/api/addresses/:id```
 
 Exemplo de body:
 ```json
@@ -51,3 +50,22 @@ Exemplo de body:
     "address": "R. Cuiabá EDITADO, 32 - Costa e Silva, Joinville - SC"
 }
 ```
+
+#### Deletar endereço:
+Método: DELETE
+```localhost:5555/api/addresses/:id```
+
+#### Compartilhar endereço:
+Método: POST
+```localhost:5555/api/addresses/:id/share```
+
+Exemplo de body:
+```json
+{
+    "expiresIn": "3h"
+}
+```
+
+#### Ver endereço compartilhado:
+Método: POST
+```localhost:5555/api/addresses/:token```

@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
-const createToken = (_id) => {
+const createToken = (_id, expiresIn) => {
     return jwt.sign({ _id }, process.env.SECRET_JWT, { expiresIn: "3d" });
 }
 
@@ -102,4 +102,56 @@ const deleteAddress = async (request, response) => {
     }
 }
 
-export { createAddress, getAddresses, editAddress, deleteAddress };
+const shareAddress = async (request, response) => {
+    try {
+        const { id } = request.params;
+        const { expiresIn } = request.body || "1h";
+        const owner = request.user.email;
+
+        if (!id) {
+            return response.status(400).json({ success: false, message: "O id é obrigatório" });
+        }
+
+        const address = await Addresses.findOne({ _id: id, owner });
+
+        if (!address) {
+            return response.status(404).json({
+                success: false,
+                message: "Endereço não encontrado ou você não tem permissão"
+            });
+        }
+
+        const token = createToken(address._id, expiresIn);
+
+        return response.status(200).json({ success: true, message: "Endereço compartilhado", data: { token } });
+
+    } catch (error) {
+        console.log(error);
+        return response.status(500).json({ success: false, message: error.message });
+    }
+}
+
+const seeAddress = async (request, response) => {
+    try {
+        const { token } = request.params;
+
+        if (!token) {
+            return response.status(400).json({ success: false, message: "O token é obrigatório" });
+        }
+
+        const decoded = jwt.verify(token, process.env.SECRET_JWT);
+        const address = await Addresses.findById(decoded._id);
+
+        if (!address) {
+            return response.status(404).json({ success: false, message: "Endereço não encontrado" });
+        }
+
+        return response.status(200).json({ success: true, message: "Endereço encontrado", data: { address } });
+
+    } catch (error) {
+        console.log(error);
+        return response.status(500).json({ success: false, message: error.message });
+    }
+}
+
+export { createAddress, getAddresses, editAddress, deleteAddress, shareAddress, seeAddress };
