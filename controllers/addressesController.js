@@ -75,4 +75,31 @@ const editAddress = async (request, response) => {
     }
 }
 
-export { createAddress, getAddresses, editAddress };
+const deleteAddress = async (request, response) => {
+    try {
+        const { id } = request.params;
+        const owner = request.user.email;
+
+        if (!id) {
+            return response.status(400).json({ success: false, message: "O id é obrigatório" });
+        }
+
+        const deletedAddress = await Addresses.findOneAndDelete(
+            { _id: id, owner }
+        );
+
+        if (!deletedAddress) {
+            return response.status(404).json({
+                success: false,
+                message: "Endereço não encontrado ou você não tem permissão"
+            });
+        }
+
+        return response.status(200).json({ success: true, message: "Endereço deletado", data: { deletedAddress } });
+    } catch (error) {
+        console.log(error);
+        return response.status(500).json({ success: false, message: error.message });
+    }
+}
+
+export { createAddress, getAddresses, editAddress, deleteAddress };
