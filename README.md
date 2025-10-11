@@ -40,3 +40,14 @@ Exemplo de body:
 #### Procurar endereço:
 Método: GET
 ```localhost:5555/api/addresses/?address=cuiabá```
+
+#### Editar endereço:
+Método: PUT
+```localhost:5555/api/addresses/```
+
+Exemplo de body:
+```json
+{
+    "address": "R. Cuiabá EDITADO, 32 - Costa e Silva, Joinville - SC"
+}
+```

@@ -24,7 +24,7 @@ const register = async (request, response) => {
 
         const token = createToken(user._id);
 
-        return response.status(201).json({ success: true, token });
+        return response.status(201).json({ success: true, message: "Usuário criado com sucesso", data: { email, token } });
     } catch (error) {
         console.log(error);
         return response.status(500).json({ success: false, message: error.message });
@@ -52,7 +52,7 @@ const login = async (request, response) => {
         }
 
         const token = createToken(user._id);
-        return response.status(200).json({ success: true, token });
+        return response.status(200).json({ success: true, message: "Login realizado com sucesso", data: { token } });
     } catch (error) {
         console.log(error);
         return response.status(500).json({ success: false, message: error.message });

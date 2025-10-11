@@ -17,7 +17,7 @@ const createAddress = async (request, response) => {
 
         const createdAddress = await Addresses.create({ address, owner: request.user.email });
 
-        return response.status(201).json({ success: true, message: "Endereço criado com sucesso: ", createdAddress });
+        return response.status(201).json({ success: true, message: "Endereço criado com sucesso: ", data: { createdAddress } });
     } catch (error) {
         console.log(error);
         return response.status(500).json({ success: false, message: error.message });
@@ -32,13 +32,41 @@ const getAddresses = async (request, response) => {
             return response.status(400).json({ success: false, message: "O endereço é obrigatório" });
         }
 
-        const foundAddress = await Addresses.find({ owner: request.user.email, address: { $regex: '.*' + address + '.*', $options: 'i' } });
+        const foundAddresses = await Addresses.find({ owner: request.user.email, address: { $regex: '.*' + address + '.*', $options: 'i' } });
 
-        return response.status(200).json({ success: true, message: foundAddress });
+        if (foundAddresses.length === 0) {
+            return response.status(404).json({ success: false, message: "Nenhum endereço encontrado" });
+        }
+
+        return response.status(200).json({ success: true, message: "Endereços encontrados", data: { foundAddresses } });
     } catch (error) {
         console.log(error);
         return response.status(500).json({ success: false, message: error.message });
     }
 }
 
-export { createAddress, getAddresses };
+const editAddress = async (request, response) => {
+    try {
+        const { id } = request.params;
+        const { address } = request.body;
+        const owner = request.user.email;
+
+        if (!address) {
+            return response.status(400).json({ success: false, message: "O endereço é obrigatório" });
+        }
+
+        const canYou = await Addresses.findOne({ _id: id, owner });
+        if (!canYou) {
+            return response.status(401).json({ success: false, message: "Você não tem permissão para editar este endereço" });
+        }
+
+        const editedAddress = await Addresses.findByIdAndUpdate(id, { address }, { new: true });
+
+        return response.status(200).json({ success: true, message: "Endereço editado", data: { editedAddress } });
+    } catch (error) {
+        console.log(error);
+        return response.status(500).json({ success: false, message: error.message });
+    }
+}
+
+export { createAddress, getAddresses, editAddress };
