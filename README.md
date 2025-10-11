@@ -2,7 +2,7 @@
 
 ## Rotas:
 
-#### Criar usuário:
+#### - Criar usuário:
 Método: POST
 ```localhost:5555/api/user/user```
 
@@ -14,7 +14,7 @@ Exemplo de body:
 }
 ```
 
-#### Login:
+#### - Login:
 Método: POST
 ```localhost:5555/api/user/login```
 
@@ -25,7 +25,7 @@ Exemplo de body:
     "password": "123"
 }
 ```
-#### Criar endereço:
+#### - Criar endereço:
 Método: POST
 ```localhost:5555/api/addresses/```
 
@@ -36,11 +36,11 @@ Exemplo de body:
 }
 ```
 
-#### Procurar endereço:
+#### - Procurar endereço:
 Método: GET
 ```localhost:5555/api/addresses/?address=cuiabá```
 
-#### Editar endereço:
+#### - Editar endereço:
 Método: PUT
 ```localhost:5555/api/addresses/:id```
 
@@ -51,11 +51,11 @@ Exemplo de body:
 }
 ```
 
-#### Deletar endereço:
+#### - Deletar endereço:
 Método: DELETE
 ```localhost:5555/api/addresses/:id```
 
-#### Compartilhar endereço:
+#### - Compartilhar endereço:
 Método: POST
 ```localhost:5555/api/addresses/:id/share```
 
@@ -66,6 +66,6 @@ Exemplo de body:
 }
 ```
 
-#### Ver endereço compartilhado:
+#### - Ver endereço compartilhado:
 Método: POST
 ```localhost:5555/api/addresses/:token```
