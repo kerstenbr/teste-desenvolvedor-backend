@@ -91,4 +91,5 @@ Método: POST
 
 ## Testes:
 
-Dentro da pasta raiz do projeto rode o comando: ```npm run test```
+Caso você tenha o Node.js instalado, rode o comando ```npm run test``` dentro da pasta raiz do projeto para iniciar os testes.
+Caso não tenha o Node.js instalado, rode o comando ```docker exec -it teste_backend_api node --experimental-vm-modules node_modules/.bin/jest --runInBand```
