@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "node server.js",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand"
+    "test": "docker exec -it teste_backend_api node --experimental-vm-modules node_modules/.bin/jest --runInBand"
   },
   "author": "kerstenbr",
   "license": "ISC",
