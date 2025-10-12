@@ -1,8 +1,8 @@
 # Teste Desenvolvedor Backend
 
-Passo a passo para rodar essa API:
+Para rodar essa API:
 
-1: Clone esse repositório
+1: Clone o repositório
 ```git clone https://github.com/kerstenbr/teste-desenvolvedor-backend.git``` 
 
 2: Entre na pasta
@@ -13,11 +13,13 @@ Passo a passo para rodar essa API:
 
 ## Rotas:
 
-Se você estiver usando o postman para fazer o teste da API, pode importar as rotas baixando esse json:
-https://drive.google.com/file/d/1VB20Cs9QYbgK4BqaUngKOupZ2aXZk4IK/view?usp=sharing
+Se você estiver usando o Postman para fazer o teste da API, pode importar as rotas usando o json:
+```Teste Desenvolvedor Backend.postman_collection.json``` que está na raiz do projeto.
 
-Lembrando que nas requisições é necessário adicionar o token do usuário e o Auth Type tem que ser Bearer.
+Nas requisições para o ```addresses```, exceto ```localhost:5555/api/addresses/:token```, é necessário adicionar o token do usuário ao header da chamada, e o Auth Type tem que ser Bearer.
 ![Print da tela do postman](https://i.imgur.com/0y2cbEm.png)
+
+Caso não esteja usando o Postman, o token tem que ser enviado dessa maneira: ```Bearer seuToken``` no request.headers.
 
 #### - Criar usuário:
 Método: POST
@@ -86,3 +88,7 @@ Exemplo de body:
 #### - Ver endereço compartilhado:
 Método: POST
 ```localhost:5555/api/addresses/:token```
+
+## Testes:
+
+Dentro da pasta raiz do projeto rode o comando: ```npm run test```
