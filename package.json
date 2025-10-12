@@ -2,10 +2,11 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "server.js",
   "type": "module",
   "scripts": {
-    "dev": "node app.js"
+    "dev": "node server.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand"
   },
   "author": "kerstenbr",
   "license": "ISC",
@@ -13,7 +14,10 @@
     "bcrypt": "^6.0.0",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
+    "jest": "^30.2.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.19.0"
+    "mongodb-memory-server": "^10.2.3",
+    "mongoose": "^8.19.0",
+    "supertest": "^7.1.4"
   }
 }
